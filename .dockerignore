@@ -1,0 +1,30 @@
+# Git and local config
+.git
+.gitignore
+.dockerignore
+
+# Local compose files (may contain secrets)
+example.docker-compose
+sample.docker-compose
+docker-compose.yml
+docker-compose.override.yml
+.env
+.env.*
+
+# Docs and examples (not needed in the image build context)
+README.md
+*.md
+docker-compose.example.yml
+
+# Editor / IDE
+.cursor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Build artifacts
+server-monitor
+*.exe
+*.test
+*.out

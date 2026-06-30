@@ -1,0 +1,15 @@
+# Local compose with real secrets — copy from docker-compose.example.yml
+example.docker-compose
+sample.docker-compose
+docker-compose.yml
+docker-compose.override.yml
+
+# Env files
+.env
+.env.*
+
+# Build output
+server-monitor
+*.exe
+*.test
+*.out

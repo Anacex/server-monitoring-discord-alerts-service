@@ -1,0 +1,40 @@
+services:
+  server-monitor:
+    # Option A: pull a pre-built image from your registry
+    # image: your-registry.example.com/devops/server-monitor:latest
+
+    # Option B: build from this repo (comment out build, use image above)
+    build: .
+    image: server-monitor:latest
+    container_name: server-monitor
+    restart: unless-stopped
+    environment:
+      # Required. Create a webhook in your Discord server channel settings.
+      DISCORD_WEBHOOK_URL: "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN"
+
+      # Comma-separated domains to check. Use domain:port for non-443 TLS endpoints.
+      # Example: "example.com,harbor.example.com:30003,jenkins.example.com:8443"
+      SSL_DOMAINS: "example.com"
+
+      # Alert when a certificate has this many days or fewer until expiry.
+      SSL_THRESHOLD_DAYS: "14"
+
+      # Alert when disk usage at DISK_CHECK_PATH reaches this percentage.
+      DISK_THRESHOLD_PERCENT: "80"
+
+      # How often to run checks, in minutes. 360 = every 6 hours.
+      CHECK_INTERVAL_MINUTES: "360"
+
+      # Hours before re-sending the same alert while the issue persists.
+      ALERT_COOLDOWN_HOURS: "24"
+
+      # Path to measure disk usage. Must match the host bind-mount below.
+      DISK_CHECK_PATH: "/hostfs"
+    volumes:
+      # Host root filesystem (read-only) so disk stats reflect the real server.
+      - /:/hostfs:ro
+      # Persists alert cooldown state across container restarts.
+      - server-monitor-state:/var/lib/server-monitor
+
+volumes:
+  server-monitor-state:
